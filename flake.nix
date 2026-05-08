@@ -21,7 +21,7 @@
   }:
     flake-utils.lib.eachDefaultSystem (
       system: let
-				＃rust-overlays
+				# rust-overlays
       	pkgs = import nixpkgs {
       		inherit system;
       		overlays = [ (import rust-overlay) ];
@@ -50,6 +50,7 @@
             # Rust関連
             rustToolchain # Rustツール群
             pkgs.trunk
+						pkgs.leptosfmt
 
             # CSS
             pkgs.tailwindcss
