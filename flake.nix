@@ -6,24 +6,40 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+		rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = {
     self,
     nixpkgs,
     flake-utils,
     treefmt-nix,
+		rust-overlay,
     ...
   }:
     flake-utils.lib.eachDefaultSystem (
       system: let
-        pkgs = nixpkgs.legacyPackages.${system};
-        # treefmtの設定を評価
+				＃rust-overlays
+      	pkgs = import nixpkgs {
+      		inherit system;
+      		overlays = [ (import rust-overlay) ];
+    		};
+    		rustToolchain = pkgs.rust-bin.stable.latest.default.override {
+      		extensions = [ "rust-src" "rust-analyzer" "clippy" "rustfmt" ];
+    		};
+
+        # treefmt
         treefmtStack = treefmt-nix.lib.evalModule pkgs {
           projectRootFile = "flake.nix";
           programs = {
             alejandra.enable = true; # Nix用
-            rustfmt.enable = true; # Rust用
-            prettier.enable = true; # Unocss用
+            rustfmt = {
+							enable = true; # Rust用
+							package = rustToolchain;
+						};
+            prettier.enable = true; # HTML/CSS/JS用
           };
         };
       in {
@@ -32,8 +48,7 @@
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = [
             # Rust関連
-            pkgs.rustc
-            pkgs.cargo
+            rustToolchain # Rustツール群
             pkgs.trunk
 
             # CSS
