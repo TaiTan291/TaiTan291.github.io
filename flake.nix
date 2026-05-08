@@ -51,6 +51,7 @@
             rustToolchain # Rustツール群
             pkgs.trunk
 						pkgs.leptosfmt
+						pkgs.rustup
 
             # CSS
             pkgs.tailwindcss
