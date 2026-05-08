@@ -23,7 +23,7 @@
           programs = {
             alejandra.enable = true; # Nix用
             rustfmt.enable = true; # Rust用
-						prettier.enable = true; # Unocss用
+            prettier.enable = true; # Unocss用
           };
         };
       in {
