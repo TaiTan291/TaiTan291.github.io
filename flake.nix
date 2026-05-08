@@ -36,6 +36,9 @@
             pkgs.cargo
             pkgs.trunk
 
+            # CSS
+            pkgs.tailwindcss
+
             # Formatter郡
             treefmtStack.config.build.wrapper
           ];
