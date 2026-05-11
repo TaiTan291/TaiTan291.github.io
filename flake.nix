@@ -21,32 +21,35 @@
         overlays = [fenix.overlays.default];
       };
 
-      toolchain = fenix.packages.${system}.complete.withComponents [
-        "cargo"
-        "clippy"
-        "rust-src"
-        "rustc"
-        "rustfmt"
-      ];
-
+      # 1. ツールチェーンを一貫性のある形で定義 (latest または stable に統一)
+      # 2. ターゲットの rust-std も含めて一気に合成する
       rustWithWasm = fenix.packages.${system}.combine [
-        toolchain
-        fenix.packages.${system}.targets.wasm32-unknown-unknown.stable.rust-std
+        (fenix.packages.${system}.latest.withComponents [
+          "cargo"
+          "clippy"
+          "rust-src"
+          "rustc"
+          "rustfmt"
+          "rust-std" # ホスト用
+        ])
+        fenix.packages.${system}.targets.wasm32-unknown-unknown.latest.rust-std # Wasm用
       ];
     in {
       devShells.default = pkgs.mkShell {
+        # 実行時に必要なもの
         buildInputs = [
           rustWithWasm
           pkgs.trunk
           pkgs.tailwindcss
-          pkgs.rust-analyzer-nightly
           pkgs.alejandra
-          
-          # WASMビルドに必要なツール
-          pkgs.wasm-bindgen-cli
-          pkgs.binaryen
-          pkgs.pkg-config
-          pkgs.openssl
+        ];
+
+        # コンパイル（ビルド時）に必要なもの
+        nativeBuildInputs = with pkgs; [
+          pkg-config
+          wasm-bindgen-cli
+          binaryen
+          openssl
         ];
 
         shellHook = ''
@@ -55,20 +58,5 @@
       };
 
       formatter = pkgs.alejandra;
-    })
-    // {
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ({pkgs, ...}: {
-            nixpkgs.overlays = [fenix.overlays.default];
-            environment.systemPackages = [
-              pkgs.trunk
-              pkgs.tailwindcss
-              pkgs.alejandra
-            ];
-          })
-        ];
-      };
-    };
+    });
 }
