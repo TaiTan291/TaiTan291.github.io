@@ -2,64 +2,73 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-		rust-overlay = {
-      url = "github:oxalica/rust-overlay";
+    fenix = {
+      url = "github:nix-community/fenix/monthly";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
+
   outputs = {
     self,
     nixpkgs,
     flake-utils,
-    treefmt-nix,
-		rust-overlay,
+    fenix,
     ...
   }:
-    flake-utils.lib.eachDefaultSystem (
-      system: let
-				# rust-overlays
-      	pkgs = import nixpkgs {
-      		inherit system;
-      		overlays = [ (import rust-overlay) ];
-    		};
-    		rustToolchain = pkgs.rust-bin.stable.latest.default.override {
-      		extensions = [ "rust-src" "rust-analyzer" "clippy" "rustfmt" ];
-    		};
+    flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [fenix.overlays.default];
+      };
 
-        # treefmt
-        treefmtStack = treefmt-nix.lib.evalModule pkgs {
-          projectRootFile = "flake.nix";
-          programs = {
-            alejandra.enable = true; # Nix用
-            rustfmt = {
-							enable = true; # Rust用
-							package = rustToolchain;
-						};
-            prettier.enable = true; # HTML/CSS/JS用
-          };
-        };
-      in {
-        formatter = treefmtStack.config.build.wrapper;
+      toolchain = fenix.packages.${system}.complete.withComponents [
+        "cargo"
+        "clippy"
+        "rust-src"
+        "rustc"
+        "rustfmt"
+      ];
 
-        devShells.default = pkgs.mkShell {
-          nativeBuildInputs = [
-            # Rust関連
-            rustToolchain # Rustツール群
-            pkgs.trunk
-						pkgs.leptosfmt
-						pkgs.rustup
+      rustWithWasm = fenix.packages.${system}.combine [
+        toolchain
+        fenix.packages.${system}.targets.wasm32-unknown-unknown.stable.rust-std
+      ];
+    in {
+      devShells.default = pkgs.mkShell {
+        buildInputs = [
+          rustWithWasm
+          pkgs.trunk
+          pkgs.tailwindcss
+          pkgs.rust-analyzer-nightly
+          pkgs.alejandra
+          
+          # WASMビルドに必要なツール
+          pkgs.wasm-bindgen-cli
+          pkgs.binaryen
+          pkgs.pkg-config
+          pkgs.openssl
+        ];
 
-            # CSS
-            pkgs.tailwindcss
+        shellHook = ''
+          export RUST_SRC_PATH="${rustWithWasm}/lib/rustlib/src/rust/library"
+        '';
+      };
 
-            # Formatter郡
-            treefmtStack.config.build.wrapper
-          ];
-        };
-      }
-    );
+      formatter = pkgs.alejandra;
+    })
+    // {
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ({pkgs, ...}: {
+            nixpkgs.overlays = [fenix.overlays.default];
+            environment.systemPackages = [
+              pkgs.trunk
+              pkgs.tailwindcss
+              pkgs.alejandra
+            ];
+          })
+        ];
+      };
+    };
 }
