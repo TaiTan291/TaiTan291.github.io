@@ -50,6 +50,7 @@
           wasm-bindgen-cli
           binaryen
           openssl
+					lib
         ];
 
         shellHook = ''
