@@ -50,8 +50,7 @@
           wasm-bindgen-cli
           binaryen
           openssl
-					lib
-        ];
+				];
 
         shellHook = ''
           export RUST_SRC_PATH="${rustWithWasm}/lib/rustlib/src/rust/library"
