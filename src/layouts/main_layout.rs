@@ -1,5 +1,5 @@
-use crate::components::footer::Footer;
-use crate::components::header::Header;
+use crate::components::element::footer::Footer;
+use crate::components::element::header::Header;
 use leptos::children::Children;
 use leptos::prelude::ClassAttribute;
 use leptos::prelude::ElementChild;
