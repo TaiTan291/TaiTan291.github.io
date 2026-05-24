@@ -1,13 +1,17 @@
 [package]
 name = "githubio"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 
 [dependencies]
 console_error_panic_hook = "0.1.7"
+
+# leptos(WASM)
 leptos = { version = "0.8.19", features = ["csr"] }
+leptos_router = "0.5"
 wasm-bindgen = "0.2"
 
+pulldown-cmark = "0.12"
 [profile.release]
 panic = "abort"
 

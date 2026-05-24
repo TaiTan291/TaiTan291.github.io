@@ -1,6 +1,14 @@
 [build]
 target = "index.html"
+public_url = "/"
 
 [serve]
 port = 8080
 open = true
+
+[[assets]]
+path = "style.css"
+type = "css"
+
+[[assets]]
+path = "public"
