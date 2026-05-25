@@ -31,8 +31,8 @@ fn main() {
                                 name="Rust"
                                 image_url="public/rust_icon.svg"
                                 skills=vec![
+                                    (Stack::Application,Proficiency::Learning),
                                     (Stack::Frontend,Proficiency::Learning),
-                                    (Stack::Application,Proficiency::Learning)
                                 ]
                             />
                             <SkillsCard
