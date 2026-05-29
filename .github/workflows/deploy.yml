@@ -1,4 +1,4 @@
-name: Release to Github Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -15,8 +15,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  Github-Pages-Release:
-    timeout-minutes: 10
+  deploy:
+    timeout-minutes: 30
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -25,26 +25,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install nightly Rust
-        uses: dtolnay/rust-toolchain@nightly
+      # Nix をインストール（flake対応）
+      - uses: cachix/install-nix-action@v27
         with:
-          components: clippy, rustfmt
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            experimental-features = nix-command flakes
 
-      - name: Add WASM target
-        run: rustup target add wasm32-unknown-unknown
-
-      # Tailwind使ってるなら
-      - name: Install Tailwind
-        run: npm install -D tailwindcss && npx tailwindcss -i input.css -o style/output.css
-
-      - name: Download Trunk
-        run: wget -qO- https://github.com/trunk-rs/trunk/releases/download/v0.21.14/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
-
+      # flake.nixのdevShellを使ってtrunk buildを実行
       - name: Build with Trunk
-        # ⚠️ ここが重要！repo名をpublic-urlに指定
-        run: ./trunk build --release --public-url "${GITHUB_REPOSITORY#*/}"
+        run: nix develop --command trunk build --release --public-url "${GITHUB_REPOSITORY#*/}"
 
-      # ⚠️ SPAルーティング用に404.htmlへコピー
+      # SPAルーティング用に404.htmlへコピー
       - name: Copy index.html to 404.html
         run: cp dist/index.html dist/404.html
 
