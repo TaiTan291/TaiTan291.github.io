@@ -1,13 +1,10 @@
-use leptos::prelude::*;
 use leptos::prelude::ClassAttribute;
 use leptos::prelude::ElementChild;
+use leptos::prelude::*;
 //use leptos::children::Children;
 
 #[component]
-pub fn Dropdown(
-    #[prop(into)] title: String,
-    children: ChildrenFn,
-    ) -> impl IntoView {
+pub fn Dropdown(#[prop(into)] title: String, children: ChildrenFn) -> impl IntoView {
     let (is_open, set_is_open) = signal(false);
 
     view! {

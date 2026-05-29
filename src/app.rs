@@ -1,10 +1,10 @@
+use crate::pages::favorite::Favorite;
+use crate::pages::favorite::Gateway;
+use crate::pages::index::IndexPage;
+use crate::pages::not_found::NotFoundPage;
 use leptos::prelude::*;
 use leptos_router::components::{Route, Router, Routes};
 use leptos_router::path;
-use crate::pages::index::IndexPage;
-use crate::pages::favorite::Favorite;
-use crate::pages::not_found::NotFoundPage;
-use crate::pages::favorite::Gateway;
 
 #[component]
 pub fn App() -> impl IntoView {

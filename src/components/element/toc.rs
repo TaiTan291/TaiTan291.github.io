@@ -17,9 +17,13 @@ pub fn Toc(#[prop(into)] title: String, #[prop(into)] tag: String) -> impl IntoV
 }
 
 #[component]
-pub fn LinkToc(#[prop(into)] title: String, #[prop(into)] url: String, #[prop(into)] image_url: String) -> impl IntoView {
+pub fn LinkToc(
+    #[prop(into)] title: String,
+    #[prop(into)] url: String,
+    #[prop(into)] image_url: String,
+) -> impl IntoView {
     view! {
-        <a 
+        <a
             href=url
             class="border-3 rounded-3xl p-4 m-4 max-w-xs w-auto h-auto bg-white flex text-center items-center"
         >
@@ -36,9 +40,13 @@ pub fn LinkToc(#[prop(into)] title: String, #[prop(into)] url: String, #[prop(in
     }
 }
 #[component]
-pub fn GorioshiLinkToc(#[prop(into)] title: String, #[prop(into)] url: String, #[prop(into)] image_url: String) -> impl IntoView {
+pub fn GorioshiLinkToc(
+    #[prop(into)] title: String,
+    #[prop(into)] url: String,
+    #[prop(into)] image_url: String,
+) -> impl IntoView {
     view! {
-        <a 
+        <a
             href=url
             class="border-3 rounded-3xl p-4 m-4 max-w-xs w-auto h-auto bg-black flex text-center items-center"
         >

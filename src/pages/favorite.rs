@@ -1,13 +1,13 @@
 use leptos::prelude::*;
-use leptos_router::*;
+use leptos::web_sys;
 use leptos_router::hooks::use_navigate;
 use leptos_router::NavigateOptions;
-use leptos::web_sys;
+use leptos_router::*;
 
-use crate::components::layout::section::Section;
-use crate::components::element::toc::{LinkToc, GorioshiLinkToc};
-use crate::components::element::item::{OshiBlock, OshiItem};
 use crate::components::element::dropdown::Dropdown;
+use crate::components::element::item::{OshiBlock, OshiItem};
+use crate::components::element::toc::{GorioshiLinkToc, LinkToc};
+use crate::components::layout::section::Section;
 use crate::layouts::layout::Layout;
 
 const ACCESS_KEY: &str = "favorite_access_granted";
@@ -50,9 +50,9 @@ pub fn FavoritePage() -> impl IntoView {
                     <Dropdown title="linuxのdotfile(設定)をいじる">
                         <p>
                             "私は独自系のlinuxディストリビューションであるnixosを現在のメイン機で使用している(ちなみにその前は同じく独自系のarch linuxを使用していた)。基本的にそこまでデザインにこだわることはそこまでないが、なぜか永遠にいじりたいことがあって終らない。ちなみに私のgithubのpublicにあるpushしている。("
-                            <a 
+                            <a
                                 href="https://github.com/TaiTan291/dotfiles"
-                                target="_blank" 
+                                target="_blank"
                                 class="text-blue-500 underline hover:text-blue-700"
                             >
                                 "こ↑こ↓"
@@ -117,10 +117,13 @@ pub fn Favorite() -> impl IntoView {
         set_authorized.set(Some(is_valid));
 
         if !is_valid {
-            navigate("/404", NavigateOptions {
-                replace: true,
-                ..Default::default()
-            });
+            navigate(
+                "/404",
+                NavigateOptions {
+                    replace: true,
+                    ..Default::default()
+                },
+            );
         }
     });
 
@@ -134,9 +137,6 @@ pub fn Favorite() -> impl IntoView {
     }
 }
 
-
-
-
 #[component]
 pub fn Gateway() -> impl IntoView {
     let navigate = use_navigate();
@@ -145,17 +145,19 @@ pub fn Gateway() -> impl IntoView {
         if let Some(storage) = get_session_storage() {
             let _ = storage.set_item(ACCESS_KEY, KEY_VALUE);
         }
-        navigate("/hobby", NavigateOptions {
-            replace: true,
-            ..Default::default()
-        });
+        navigate(
+            "/hobby",
+            NavigateOptions {
+                replace: true,
+                ..Default::default()
+            },
+        );
     });
 
     view! {
         <div>"Redirecting..."</div>
     }
 }
-
 
 fn get_session_storage() -> Option<web_sys::Storage> {
     web_sys::window()?.session_storage().ok()?

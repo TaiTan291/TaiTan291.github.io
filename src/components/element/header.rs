@@ -1,29 +1,27 @@
 use leptos::prelude::ClassAttribute;
 use leptos::prelude::ElementChild;
-use leptos::prelude::Signal;
 use leptos::prelude::Get;
+use leptos::prelude::Signal;
 use leptos::*;
 use leptos_router::components::A;
 
 #[component]
 pub fn Header(#[prop(into)] status: Signal<i8>) -> impl IntoView {
-    let current_view = move || {
-        match status.get() {
-            1 => vec![
-                view! { <A href="#about">"About"</A> }.into_view(),
-                view! { <A href="#skills">"Skills"</A> }.into_view(),
-                view! { <A href="#works">"Works"</A> }.into_view(),
-            ],
+    let current_view = move || match status.get() {
+        1 => vec![
+            view! { <A href="#about">"About"</A> }.into_view(),
+            view! { <A href="#skills">"Skills"</A> }.into_view(),
+            view! { <A href="#works">"Works"</A> }.into_view(),
+        ],
 
-            2 => vec![
-                view! { <A href="#about">"About"</A> }.into_view(),
-                view! { <A href="#hobby">"My hobby"</A> }.into_view(),
-                view! { <A href="#vtubr">"Vtuber"</A> }.into_view(),
-                view! { <A href="#link">"Link"</A> }.into_view(),
-            ],
+        2 => vec![
+            view! { <A href="#about">"About"</A> }.into_view(),
+            view! { <A href="#hobby">"My hobby"</A> }.into_view(),
+            view! { <A href="#vtubr">"Vtuber"</A> }.into_view(),
+            view! { <A href="#link">"Link"</A> }.into_view(),
+        ],
 
-            _ => vec![],
-        }
+        _ => vec![],
     };
 
     view! {
