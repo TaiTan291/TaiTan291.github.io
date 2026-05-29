@@ -15,7 +15,7 @@ pub fn App() -> impl IntoView {
                     <Route path=path!("/") view=IndexPage/>
                     <Route path=path!("/hobby") view=Favorite/>
                     <Route path=path!("/404") view=NotFoundPage/>
-                    <Route path=path!("/114514") view=Gateway/>
+                    //<Route path=path!("/114514") view=Gateway/>
                 </Routes>
             </main>
         </Router>
