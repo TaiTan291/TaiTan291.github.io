@@ -47,6 +47,9 @@ pub fn FavoritePage() -> impl IntoView {
                     <Dropdown title="アニメ/アニメ映画を見る">
                         <p>"きまま~に見る。最近は何見てるんだおるか……自分でもわからん。昔のアニメはあんま見ない(長編のやつも)"</p>
                     </Dropdown>
+                    <Dropdown title="学マス">
+                		<p>“学マス初心者、千奈ちゃん推し”</p>
+                    </Dropdown>
                     <Dropdown title="linuxのdotfile(設定)をいじる">
                         <p>
                             "私は独自系のlinuxディストリビューションであるnixosを現在のメイン機で使用している(ちなみにその前は同じく独自系のarch linuxを使用していた)。基本的にそこまでデザインにこだわることはそこまでないが、なぜか永遠にいじりたいことがあって終らない。ちなみに私のgithubのpublicにあるpushしている。("
@@ -93,7 +96,7 @@ pub fn FavoritePage() -> impl IntoView {
                 <OshiBlock>
                     <OshiItem label="最近見てる/気になってる人③">"犬山たまきくん"</OshiItem>
                     <OshiItem label="見る頻度">"切り抜き動画を良くみる、たまにリアタイしたりアーカイブも見にいく"</OshiItem>
-                    <OshiItem label="好きなところ">"なんといってもめあたむ回やぶったぎりる配信がおもしろい"</OshiItem>
+                    <OshiItem label="好きなところ">"なんといっても配信が面白い、特にめあたむ回やぶったぎりる回がおもしろい"</OshiItem>
                 </OshiBlock>
                 <OshiBlock>
                     <OshiItem label="最近見てる/気になってる人④">"めめ村(Among Usなどのゆっくり実況)"</OshiItem>
