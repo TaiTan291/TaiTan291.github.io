@@ -40,7 +40,7 @@ jobs:
       # flake.nixのdevShell内でtrunk build
       # --public-url: username.github.io/repo_name のパス解決に必須
       - name: Build with Trunk
-        run: nix develop --command trunk build --release --public-url "${GITHUB_REPOSITORY#*/}"
+        run: nix develop --command trunk build --release --public-url "/"
 
       # /hobby 等への直アクセス・リロード対策
       - name: Copy index.html to 404.html
