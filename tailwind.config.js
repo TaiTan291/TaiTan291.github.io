@@ -5,21 +5,17 @@ module.exports = {
     extend: {
       colors: {
         cyber: {
-          // 背景・ベース
-          page:      "##e2e8f0",  // ページ背景
-          container: "#020617",  // コンテナ / Section
-          surface:   "#0f172a",  // Header / Footer
-					block:     "#242426",  // block
-					layout:    "#0d2137",
+          page:      "#FFFFFF",
+					container: "#EEEDFE",
+					layout:    "#F4F3FF",
+					surface:   "#534AB7",
 
-          // アクセント
-          accent:    "#FFFFFF",  // メインアクセント（見出し・ボーダー・タグ）
-          link:      "#4499ff",  // サブアクセント（リンク・ホバー）
+					text:      "#0F172A",
+					layouttext:"#FFFFFF",
 
-          // テキスト
-          text:      "#FFFFFF",  // メインテキスト
-          muted:     "#FFFFFF",  // サブテキスト
-        },
+					muted:     "#64748B",
+					accent:    "#4F46E5",
+				},
 				stack: {
 					frontend: {
 						bg:     "#EEEDFE",
