@@ -1,34 +1,55 @@
-name: Deploy to GitHub Pages
+name: Release to Github Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  deploy:
+  Github-Pages-Release:
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install Nix
-        uses: cachix/install-nix-action@v25
+      - name: Install nightly Rust
+        uses: dtolnay/rust-toolchain@nightly
         with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          components: clippy, rustfmt
 
-      - name: Build with Trunk (Nix develop)
-        run: nix develop -c trunk build --release --public-url /
+      - name: Add WASM target
+        run: rustup target add wasm32-unknown-unknown
+
+      # Tailwind使ってるなら
+      - name: Install Tailwind
+        run: npm install -D tailwindcss && npx tailwindcss -i input.css -o style/output.css
+
+      - name: Download Trunk
+        run: wget -qO- https://github.com/trunk-rs/trunk/releases/download/v0.21.14/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
+
+      - name: Build with Trunk
+        # ⚠️ ここが重要！repo名をpublic-urlに指定
+        run: ./trunk build --release --public-url "${GITHUB_REPOSITORY#*/}"
+
+      # ⚠️ SPAルーティング用に404.htmlへコピー
+      - name: Copy index.html to 404.html
+        run: cp dist/index.html dist/404.html
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
