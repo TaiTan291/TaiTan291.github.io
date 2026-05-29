@@ -121,7 +121,8 @@ pub fn SkillsCard(
 
     view! {
         <div
-            class="min-w-30 h-40 m-3 flex flex-1 flex-col items-center justify-start bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-all"
+            class=format!("min-w-30 h-40 m-2 flex flex-1 flex-col items-center justify-start bg-white border-3 border-yellow-300 rounded-xl overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-all",
+            )
             on:click=move |_| set_show_modal.set(true)
         >
             <div class=format!(
@@ -131,7 +132,7 @@ pub fn SkillsCard(
                 <img
                     src={image_url.clone()}
                     alt="Logo"
-                    class="w-24 h-24 object-contain"
+                    class="w-20 h-20 m-1 object-contain"
                 />
             </div>
             <h2 class="my-4 text-xl text-gray-800 font-medium">{name.clone()}</h2>
@@ -154,7 +155,7 @@ pub fn SkillsCard(
                             <img
                                 src={image_url.clone()}
                                 alt="Logo"
-                                class="w-40 h-40 object-contain"
+                                class="w-40 h-40 m-2 object-contain"
                             />
                         </div>
 

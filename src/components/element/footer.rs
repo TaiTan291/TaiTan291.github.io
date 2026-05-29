@@ -5,7 +5,7 @@ use leptos::*;
 #[component]
 pub fn Footer() -> impl IntoView {
     view! {
-        <footer class="w-auto h-6 bg-cyber-surface text-center text-sm text-cyber-text">
+        <footer class="w-auto h-6 bg-cyber-surface text-center text-sm text-cyber-layouttext">
             <p>{ "© 2026 TaiTan291 All Rights Reserved." }</p>
         </footer>
     }
