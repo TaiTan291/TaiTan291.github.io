@@ -48,7 +48,7 @@ pub fn FavoritePage() -> impl IntoView {
                         <p>"きまま~に見る。最近は何見てるんだおるか……自分でもわからん。昔のアニメはあんま見ない(長編のやつも)"</p>
                     </Dropdown>
                     <Dropdown title="学マス">
-                		<p>“学マス初心者、千奈ちゃん推し”</p>
+                		<p>"学マス初心者、千奈ちゃん推し”</p>
                     </Dropdown>
                     <Dropdown title="linuxのdotfile(設定)をいじる">
                         <p>
