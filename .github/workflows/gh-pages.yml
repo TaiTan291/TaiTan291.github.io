@@ -5,7 +5,7 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Node24を今すぐ使う（警告対策）
+# configure-pages等がまだNode24未対応のため強制指定
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -27,26 +27,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6  # ← v4→v6に更新（Node24対応済み）
+      # Node24対応済み
+      - uses: actions/checkout@v6
 
+      # flake.nixのdevShellをCI環境に展開
       - uses: cachix/install-nix-action@v27
         with:
           nix_path: nixpkgs=channel:nixos-unstable
           extra_nix_config: |
             experimental-features = nix-command flakes
 
+      # flake.nixのdevShell内でtrunk build
+      # --public-url: username.github.io/repo_name のパス解決に必須
       - name: Build with Trunk
         run: nix develop --command trunk build --release --public-url "${GITHUB_REPOSITORY#*/}"
 
+      # /hobby 等への直アクセス・リロード対策
       - name: Copy index.html to 404.html
         run: cp dist/index.html dist/404.html
 
+      # 以下3つはNode24未対応（警告は出るが動作する）
       - name: Setup Pages
-        uses: actions/configure-pages@v5  # Node24版が出たらv6等に上げる
+        uses: actions/configure-pages@v5
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3  # 同上
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4  # 同上
+        uses: actions/deploy-pages@v4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
